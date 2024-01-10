@@ -1,0 +1,21 @@
+{
+  "name": "merry-goblin/barcode-writer-composer",
+  "description": "Barcode writer in PHP",
+  "keywords": ["barcode","php"],
+  "license": "GPL-3.0-or-later",
+  "authors": [
+    {
+      "name": "Keller Alexandre"
+    }
+  ],
+  "require": {
+    "php": ">=5.6.0",
+    "ext-gd": "*"
+  },
+  "autoload": {
+    "psr-0": {
+      "MerryGoblin\\BarcodeWriter\\": "/"
+    }
+  },
+  "minimum-stability": "stable"
+}
