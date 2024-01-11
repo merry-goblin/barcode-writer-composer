@@ -13,8 +13,8 @@
     "ext-gd": "*"
   },
   "autoload": {
-    "psr-0": {
-      "MerryGoblin\\BarcodeWriter\\": "/"
+    "psr-4": {
+      "": "src/"
     }
   },
   "minimum-stability": "stable"

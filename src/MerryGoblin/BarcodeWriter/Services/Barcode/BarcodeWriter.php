@@ -8,10 +8,16 @@ namespace MerryGoblin\BarcodeWriter\Services\Barcode;
 
 use MerryGoblin\BarcodeWriter\Services\Barcode\Format\BarcodeFormatHelper;
 use MerryGoblin\BarcodeWriter\Services\Barcode\Format\BarcodeFormatInterface;
+use MerryGoblin\BarcodeWriter\Services\Barcode\Type\BarcodeTypeHelper;
+use MerryGoblin\BarcodeWriter\Services\Barcode\Type\BarcodeTypeInterface;
+use MerryGoblin\BarcodeWriter\Services\Barcode\Encoder\BarcodeEncoderHelper;
+use MerryGoblin\BarcodeWriter\Services\Barcode\Encoder\BarcodeEncoderInterface;
 
 use MerryGoblin\BarcodeWriter\Services\Barcode\Format\BarcodeFormatNotHandledException;
 use MerryGoblin\BarcodeWriter\Services\Barcode\Format\ResourceRenderingNotAllowedException;
 use MerryGoblin\BarcodeWriter\Services\Barcode\Format\StringRenderingNotAllowedException;
+use MerryGoblin\BarcodeWriter\Services\Barcode\Type\BarcodeTypeNotHandledException;
+use MerryGoblin\BarcodeWriter\Services\Barcode\Encoder\BarcodeEncoderNotHandledException;
 
 class BarcodeWriter
 {
@@ -36,7 +42,14 @@ class BarcodeWriter
 			throw new ResourceRenderingNotAllowedException();
 		}
 
-		
+		//	Type
+		$barcodeType = $this->getBarcodeType($type);
+
+		//	Encoder
+		$barcodeEncoder = $this->getBarcodeEncoder($barcodeType->getEncoderName());
+
+		var_dump($barcodeEncoder->getShapeName());
+		exit();
 
 		$image = imagecreatetruecolor(1, 1);
 		return $image;
@@ -83,5 +96,25 @@ class BarcodeWriter
 	private function getBarcodeFormat($format)
 	{
 		return BarcodeFormatHelper::getBarcodeFormat($format);
+	}
+
+	/**
+	 * @param string $type
+	 * @return BarcodeTypeInterface
+	 * @throws BarcodeTypeNotHandledException
+	 */
+	private function getBarcodeType($type)
+	{
+		return BarcodeTypeHelper::getBarcodeType($type);
+	}
+
+	/**
+	 * @param string $encoder
+	 * @return BarcodeEncoderInterface
+	 * @throws BarcodeEncoderNotHandledException
+	 */
+	private function getBarcodeEncoder($encoder)
+	{
+		return BarcodeEncoderHelper::getBarcodeEncoder($encoder);
 	}
 }

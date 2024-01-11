@@ -1,5 +1,5 @@
 MerryGoblin BarcodeWriter
-Barcode reader in PHP
+Barcode writer in PHP
 ========================
 
 [Github](https://github.com/merry-goblin/barcode-writer-composer)
