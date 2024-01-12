@@ -4,9 +4,6 @@ namespace MerryGoblin\BarcodeWriter\Services\Barcode\Encoder;
 
 abstract class AbstractBarcodeEncoder
 {
-	const LINEAR_SHAPE = 'linear';
-	const MATRIX_SHAPE = 'matrix';
-
 	protected $shapeName = null;
 
 	/**

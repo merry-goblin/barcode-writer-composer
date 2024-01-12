@@ -8,4 +8,9 @@ interface BarcodeTypeInterface
 	 * @return string
 	 */
 	function getEncoderName();
+
+	/**
+	 * @return array
+	 */
+	function getParameters();
 }

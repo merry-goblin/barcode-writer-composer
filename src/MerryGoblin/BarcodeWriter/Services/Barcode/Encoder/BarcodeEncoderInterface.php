@@ -2,9 +2,19 @@
 
 namespace MerryGoblin\BarcodeWriter\Services\Barcode\Encoder;
 
+use MerryGoblin\BarcodeWriter\Services\Barcode\Type\BarcodeTypeInterface;
+
 interface BarcodeEncoderInterface
 {
-	function encode($data, $params = null);
+	/**
+	 * @param string $data
+	 * @param BarcodeTypeInterface $barcodeType
+	 * @return array
+	 */
+	function encode($data, BarcodeTypeInterface $barcodeType);
 
+	/**
+	 * @return string
+	 */
 	function getShapeName();
 }

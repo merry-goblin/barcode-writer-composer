@@ -2,7 +2,7 @@
 
 namespace MerryGoblin\BarcodeWriter\Services\Barcode\Shape;
 
-class MatrixShapeBuilder extends AbstractShapeBuilder
+class BarcodeMatrixShape extends AbstractBarcodeShape
 {
 	/**
 	 * @param array $encodedData

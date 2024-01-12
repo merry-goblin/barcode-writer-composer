@@ -2,9 +2,12 @@
 
 namespace MerryGoblin\BarcodeWriter\Services\Barcode\Encoder;
 
+use MerryGoblin\BarcodeWriter\Services\Barcode\Shape\AbstractBarcodeShape;
+use MerryGoblin\BarcodeWriter\Services\Barcode\Type\BarcodeTypeInterface;
+
 class Code128BarcodeEncoder extends AbstractBarcodeEncoder implements BarcodeEncoderInterface
 {
-	protected $shapeName = self::LINEAR_SHAPE;
+	protected $shapeName = AbstractBarcodeShape::LINEAR_SHAPE;
 
 	private $alphabet = [
 		[2, 1, 2, 2, 2, 2], [2, 2, 2, 1, 2, 2],
@@ -65,12 +68,12 @@ class Code128BarcodeEncoder extends AbstractBarcodeEncoder implements BarcodeEnc
 
 	/**
 	 * @param string $data
-	 * @param array $params
+	 * @param BarcodeTypeInterface $barcodeType
 	 * @return array
 	 */
-	public function encode($data, $params = null)
+	public function encode($data, BarcodeTypeInterface $barcodeType)
 	{
-		list($dstate, $fnc1) = $this->getEncodeParameters($params);
+		list($dstate, $fnc1) = $this->getParametersForEncodeMethod($barcodeType->getParameters());
 
 		$data = preg_replace('/[\x80-\xFF]/', '', $data);
 		$label = preg_replace('/[\x00-\x1F\x7F]/', ' ', $data);
@@ -99,7 +102,7 @@ class Code128BarcodeEncoder extends AbstractBarcodeEncoder implements BarcodeEnc
 	 * @param array|null $params
 	 * @return array
 	 */
-	private function getEncodeParameters($params = null)
+	private function getParametersForEncodeMethod($params = null)
 	{
 		$dstate = (isset($params['dstate'])) ? $params['dstate'] : 0;
 		$fnc1 = (isset($params['fnc1'])) ? $params['fnc1'] : false;
