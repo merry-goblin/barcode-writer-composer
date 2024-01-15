@@ -15,3 +15,5 @@ Barcode writer in PHP
 --------------------------
 
 author : [alexandre keller](https://github.com/merry-goblin)
+
+Based on : [alexandre keller](https://github.com/kreativekorp/barcode)
