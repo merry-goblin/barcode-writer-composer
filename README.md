@@ -1,4 +1,4 @@
-MerryGoblin BarcodeWriter
+MerryGoblin BarcodeWriter<br />
 Barcode writer in PHP
 ========================
 
