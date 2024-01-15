@@ -10,7 +10,7 @@ Barcode writer in PHP
 
 ### Install
 
-- composer require merry-goblin/barcode-writer-composer:"dev-main"
+- composer require merry-goblin/barcode-writer-composer:"1.0.0"
 
 --------------------------
 
