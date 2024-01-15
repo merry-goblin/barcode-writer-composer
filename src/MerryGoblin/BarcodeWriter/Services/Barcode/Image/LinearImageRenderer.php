@@ -49,7 +49,7 @@ class LinearImageRenderer extends AbstractBarcodeImageRenderer implements Barcod
 				imagefilledrectangle($image, $mx, $y, $mw - 1, $my - 1, $mc);
 				$mx = $mw;
 			}
-			if (!is_null($label)) {
+			if (!is_null($label) && $barcodeConfig->displayLabel) {
 				$lx = ($x + ($mx - $x) * $lx);
 				$lw = imagefontwidth($barcodeConfig->ts) * strlen($label);
 				$lx = round($lx - $lw / 2);

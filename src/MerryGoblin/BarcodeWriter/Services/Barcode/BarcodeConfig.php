@@ -31,6 +31,7 @@ class BarcodeConfig
 	public $ms = null;
 	public $md = null;
 
+	public $displayLabel = false; // Allow label to be displayed
 	public $th = null;
 	public $tf = null;
 	public $ts = null;

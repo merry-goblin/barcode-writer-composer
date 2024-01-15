@@ -13,4 +13,12 @@ abstract class AbstractBarcodeType
 	{
 		return $this->encoderName;
 	}
+
+	/**
+	 * @return array
+	 */
+	public function getParameters()
+	{
+		return [];
+	}
 }
