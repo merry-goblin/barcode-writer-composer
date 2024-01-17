@@ -45,6 +45,7 @@ class BarcodeWriter
 	 * @throws BarcodeEncoderNotHandledException
 	 * @throws BarcodeFormatNotHandledException
 	 * @throws BarcodeShapeNotHandledException
+	 * @throws BarcodeTypeNotHandledException
 	 * @throws ResourceRenderingNotAllowedException
 	 */
 	public function renderResource($format, $type, $data, BarcodeConfig $barcodeConfig = null)
@@ -186,6 +187,7 @@ class BarcodeWriter
 	/**
 	 * @param string $type
 	 * @return BarcodeTypeInterface
+	 * @throws BarcodeTypeNotHandledException
 	 */
 	private function getBarcodeType($type)
 	{
