@@ -17,4 +17,14 @@ class BarcodeSVGFormat extends AbstractBarcodeFormat implements BarcodeFormatInt
 	{
 		throw new ResourceRenderingNotAllowedException();
 	}
+
+	/**
+	 * @param string $image
+	 * @return void
+	 */
+	public function outputString($image)
+	{
+		header($this->getContentType());
+		echo $image;
+	}
 }

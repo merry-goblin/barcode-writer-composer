@@ -31,4 +31,23 @@ abstract class AbstractBarcodeFormat
 	{
 		return 'Content-Type: '.$this->contentType;
 	}
+
+	/**
+	 * @return string
+	 */
+	public function getRawContentType()
+	{
+		return $this->contentType;
+	}
+
+	/**
+	 * @param resource $image
+	 * @return false|string
+	 */
+	public function getResourceContent($image)
+	{
+		ob_start();
+		$this->outputResource($image, false);
+		return ob_get_clean();
+	}
 }

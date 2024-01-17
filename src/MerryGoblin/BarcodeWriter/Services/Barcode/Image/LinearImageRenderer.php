@@ -5,8 +5,16 @@ namespace MerryGoblin\BarcodeWriter\Services\Barcode\Image;
 use MerryGoblin\BarcodeWriter\Services\Barcode\BarcodeConfig;
 use MerryGoblin\BarcodeWriter\Services\Barcode\Shape\BarcodeDimensions;
 
+use MerryGoblin\BarcodeWriter\Services\Barcode\Format\StringRenderingNotAllowedException;
+
 class LinearImageRenderer extends AbstractBarcodeImageRenderer implements BarcodeImageRendererInterface
 {
+	/**
+	 * @param array $encodedData
+	 * @param BarcodeDimensions $dimensions
+	 * @param BarcodeConfig $barcodeConfig
+	 * @return resource
+	 */
 	public function renderResource($encodedData, BarcodeDimensions $dimensions, BarcodeConfig $barcodeConfig)
 	{
 		list($image, $colors, $textColor) = $this->initImage($dimensions, $barcodeConfig);
@@ -58,6 +66,19 @@ class LinearImageRenderer extends AbstractBarcodeImageRenderer implements Barcod
 			$x = $mx;
 		}
 		return $image;
+	}
+
+	/**
+	 * @param array $encodedData
+	 * @param BarcodeDimensions $dimensions
+	 * @param BarcodeConfig $barcodeConfig
+	 * @return string
+	 * @throws StringRenderingNotAllowedException
+	 */
+	function renderString($encodedData, BarcodeDimensions $dimensions, BarcodeConfig $barcodeConfig)
+	{
+		$image = $this->renderResource($encodedData, $dimensions, $barcodeConfig);
+
 	}
 }
 

@@ -18,4 +18,14 @@ class BarcodeGIFFormat extends AbstractBarcodeFormat implements BarcodeFormatInt
 		imagegif($image);
 		imagedestroy($image);
 	}
+
+	/**
+	 * @param string $image
+	 * @return void
+	 * @throws StringRenderingNotAllowedException
+	 */
+	function outputString($image)
+	{
+		throw new StringRenderingNotAllowedException();
+	}
 }

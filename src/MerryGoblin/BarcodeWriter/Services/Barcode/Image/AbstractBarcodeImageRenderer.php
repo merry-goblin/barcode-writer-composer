@@ -19,6 +19,22 @@ abstract class AbstractBarcodeImageRenderer
 
 		$bgColor = $this->allocateColor($image, $barcodeConfig->bc);
 		imagefill($image, 0, 0, $bgColor);
+		$colors = $this->initColors($barcodeConfig);
+		foreach ($colors as $i => $color) {
+			$colors[$i] = $this->allocateColor($image, $color);
+		}
+		$textColor = $this->allocateColor($image, $barcodeConfig->tc);
+
+		return [$image, $colors, $textColor];
+	}
+
+	/**
+	 * @param BarcodeConfig $barcodeConfig
+	 * @param BarcodeDimensions $dimensions
+	 * @return array
+	 */
+	protected function initColors(BarcodeConfig $barcodeConfig)
+	{
 		$colors = [
 			$barcodeConfig->cs,
 			$barcodeConfig->cm,
@@ -31,12 +47,7 @@ abstract class AbstractBarcodeImageRenderer
 			$barcodeConfig->c8,
 			$barcodeConfig->c9,
 		];
-		foreach ($colors as $i => $color) {
-			$colors[$i] = $this->allocateColor($image, $color);
-		}
-		$textColor = $this->allocateColor($image, $barcodeConfig->tc);
-
-		return [$image, $colors, $textColor];
+		return $colors;
 	}
 
 	/**
@@ -82,4 +93,6 @@ abstract class AbstractBarcodeImageRenderer
 				return imagecolorallocatealpha($image, 0, 0, 0, 127);
 		}
 	}
+
+
 }

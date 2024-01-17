@@ -12,10 +12,22 @@ class BarcodePNGFormat extends AbstractBarcodeFormat implements BarcodeFormatInt
 	 * @param resource $image
 	 * @return void
 	 */
-	public function outputResource($image)
+	public function outputResource($image, $applyContentTypeInHeader = true)
 	{
-		header($this->getContentType());
+		if ($applyContentTypeInHeader) {
+			header($this->getContentType());
+		}
 		imagepng($image);
 		imagedestroy($image);
+	}
+
+	/**
+	 * @param string $image
+	 * @return void
+	 * @throws StringRenderingNotAllowedException
+	 */
+	function outputString($image)
+	{
+		throw new StringRenderingNotAllowedException();
 	}
 }

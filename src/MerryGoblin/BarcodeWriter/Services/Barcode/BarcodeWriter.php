@@ -26,6 +26,11 @@ use MerryGoblin\BarcodeWriter\Services\Barcode\Type\BarcodeTypeNotHandledExcepti
 
 class BarcodeWriter
 {
+	/**
+	 * @var BarcodeFormatInterface
+	 */
+	private $lastBarcodeFormat;
+
 	public function __construct()
 	{
 
@@ -49,6 +54,7 @@ class BarcodeWriter
 
 		//	Barcode format
 		$barcodeFormat = $this->getBarcodeFormat($format);
+		$this->lastBarcodeFormat = $barcodeFormat;
 		if (!$barcodeFormat->canRenderAResource()) {
 			throw new ResourceRenderingNotAllowedException();
 		}
@@ -75,33 +81,96 @@ class BarcodeWriter
 	 * @param string $format
 	 * @param string $type
 	 * @param string $data
+	 * @param BarcodeConfig|null $barcodeConfig
 	 * @return string
+	 * @throws BarcodeEncoderNotHandledException
 	 * @throws BarcodeFormatNotHandledException
+	 * @throws BarcodeShapeNotHandledException
 	 * @throws StringRenderingNotAllowedException
 	 */
-	public function renderString($format, $type, $data)
+	public function renderString($format, $type, $data, BarcodeConfig $barcodeConfig = null)
 	{
 		//	Barcode format
 		$barcodeFormat = $this->getBarcodeFormat($format);
-		if (!$barcodeFormat->canRenderAString()) {
-			throw new StringRenderingNotAllowedException();
-		}
+		if ($barcodeFormat->canRenderAResource()) {
+			//	Shortcut: use renderResource method then get the output of this resource in a buffer
+			$resource = $this->renderResource($format, $type, $data, $barcodeConfig);
+			$imageContent = $barcodeFormat->getResourceContent($resource);
+		} else {
+			if (!$barcodeFormat->canRenderAString()) {
+				throw new StringRenderingNotAllowedException();
+			}
+			$this->lastBarcodeFormat = $barcodeFormat;
 
-		return '';
+			$barcodeConfig = (!is_null($barcodeConfig)) ? $barcodeConfig : new BarcodeConfig();
+			$barcodeConfig->init();
+
+			$barcodeConfig->initFormat($format);
+
+			//	Type
+			$barcodeType = $this->getBarcodeType($type);
+
+			//	Encoder
+			$barcodeEncoder = $this->getBarcodeEncoder($barcodeType->getEncoderName());
+			$encodedData = $barcodeEncoder->encode($data, $barcodeType);
+
+			//	Shape
+			$barcodeShape = $this->getBarcodeShape($barcodeEncoder->getShapeName());
+			$barcodeConfig->initShapeAndFormat($barcodeEncoder->getShapeName(), $format);
+			$dimensions = $barcodeShape->build($encodedData, $barcodeConfig);
+
+			//	Image Renderer
+			$barcodeImageRenderer = $this->getBarcodeImageRenderer($barcodeEncoder->getShapeName(), $format);
+			$imageContent = $barcodeImageRenderer->renderString($encodedData, $dimensions, $barcodeConfig);
+		}
+		return $imageContent;
 	}
 
 	/**
 	 * @param string $format
 	 * @param string $type
 	 * @param string $data
-	 * @return void
+	 * @param BarcodeConfig|null $barcodeConfig
+	 * @return string
+	 * @throws BarcodeEncoderNotHandledException
 	 * @throws BarcodeFormatNotHandledException
+	 * @throws BarcodeShapeNotHandledException
+	 * @throws StringRenderingNotAllowedException
 	 */
-	public function output($format, $type, $data)
+	public function renderImageSource($format, $type, $data, BarcodeConfig $barcodeConfig = null)
 	{
-		//	Barcode format
-		$barcodeFormat = $this->getBarcodeFormat($format);
-		// TODO
+		$imageContent = $this->renderString($format, $type, $data, $barcodeConfig);
+		return 'data:'.$this->lastBarcodeFormat->getRawContentType().';base64,'.base64_encode($imageContent);
+	}
+
+	/**
+	 * @param string $format
+	 * @param string $type
+	 * @param string $data
+	 * @param BarcodeConfig|null $barcodeConfig
+	 * @return void
+	 * @throws BarcodeEncoderNotHandledException
+	 * @throws BarcodeFormatNotHandledException
+	 * @throws BarcodeShapeNotHandledException
+	 * @throws ResourceRenderingNotAllowedException
+	 */
+	public function output($format, $type, $data, BarcodeConfig $barcodeConfig = null)
+	{
+		try {
+			$resource = $this->renderResource($format, $type, $data, $barcodeConfig);
+			if (!is_null($this->lastBarcodeFormat)) {
+				$this->lastBarcodeFormat->outputResource($resource);
+			}
+		} catch (ResourceRenderingNotAllowedException $e) {
+			try {
+				$imageAsString = $this->renderString($format, $type, $data, $barcodeConfig);
+				if (!is_null($this->lastBarcodeFormat)) {
+					$this->lastBarcodeFormat->outputString($imageAsString);
+				}
+			} catch (StringRenderingNotAllowedException $e) {
+
+			}
+		}
 	}
 
 	/**

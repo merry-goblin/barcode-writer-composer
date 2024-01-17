@@ -12,5 +12,16 @@ class MatrixSVGRenderer extends AbstractBarcodeImageRenderer implements BarcodeI
 	{
 		throw new ResourceRenderingNotAllowedException();
 	}
+
+	/**
+	 * @param array $encodedData
+	 * @param BarcodeDimensions $dimensions
+	 * @param BarcodeConfig $barcodeConfig
+	 * @return string
+	 */
+	public function renderString($encodedData, BarcodeDimensions $dimensions, BarcodeConfig $barcodeConfig)
+	{
+		return '';
+	}
 }
 

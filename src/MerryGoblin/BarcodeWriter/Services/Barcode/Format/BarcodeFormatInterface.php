@@ -20,9 +20,27 @@ interface BarcodeFormatInterface
 	function getContentType();
 
 	/**
+	 * @return string
+	 */
+	function getRawContentType();
+
+	/**
 	 * @param resource $image
 	 * @return void
 	 * @throws ResourceRenderingNotAllowedException
 	 */
 	function outputResource($image);
+
+	/**
+	 * @param string $image
+	 * @return void
+	 * @throws StringRenderingNotAllowedException
+	 */
+	function outputString($image);
+
+	/**
+	 * @param resource $image
+	 * @return false|string
+	 */
+	function getResourceContent($image);
 }
