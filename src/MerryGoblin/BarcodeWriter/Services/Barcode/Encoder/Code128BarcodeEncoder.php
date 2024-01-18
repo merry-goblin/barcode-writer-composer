@@ -7,7 +7,7 @@ use MerryGoblin\BarcodeWriter\Services\Barcode\Type\BarcodeTypeInterface;
 
 class Code128BarcodeEncoder extends AbstractBarcodeEncoder implements BarcodeEncoderInterface
 {
-	protected $shapeName = AbstractBarcodeShape::LINEAR_SHAPE;
+	protected $shapeName = BarcodeShapeHelper::SHAPE_LINEAR;
 
 	protected $alphabet = [
 		[2, 1, 2, 2, 2, 2], [2, 2, 2, 1, 2, 2],

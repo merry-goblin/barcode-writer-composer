@@ -7,7 +7,7 @@ use MerryGoblin\BarcodeWriter\Services\Barcode\Type\BarcodeTypeInterface;
 
 class EAN8BarcodeEncoder extends UPCABarcodeEncoder implements BarcodeEncoderInterface
 {
-	protected $shapeName = AbstractBarcodeShape::LINEAR_SHAPE;
+	protected $shapeName = BarcodeShapeHelper::SHAPE_LINEAR;
 
 	/**
 	 * @param string $data

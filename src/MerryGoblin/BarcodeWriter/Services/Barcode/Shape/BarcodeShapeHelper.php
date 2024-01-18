@@ -4,6 +4,9 @@ namespace MerryGoblin\BarcodeWriter\Services\Barcode\Shape;
 
 class BarcodeShapeHelper
 {
+	const SHAPE_LINEAR = 'linear';
+	const SHAPE_MATRIX = 'matrix';
+
 	/**
 	 * @param string $shape
 	 * @return BarcodeShapeInterface

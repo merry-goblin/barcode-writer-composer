@@ -7,7 +7,7 @@ use MerryGoblin\BarcodeWriter\Services\Barcode\Type\BarcodeTypeInterface;
 
 class Code39AsciiBarcodeEncoder extends Code93BarcodeEncoder implements BarcodeEncoderInterface
 {
-	protected $shapeName = AbstractBarcodeShape::LINEAR_SHAPE;
+	protected $shapeName = BarcodeShapeHelper::SHAPE_LINEAR;
 
 	protected $asciiAlphabet = [
 		'&U', '#A', '#B', '#C', '#D', '#E', '#F', '#G',

@@ -4,6 +4,16 @@ namespace MerryGoblin\BarcodeWriter\Services\Barcode\Encoder;
 
 class BarcodeEncoderHelper
 {
+	const ENCODER_UPCA = 'UPCA';
+	const ENCODER_UPCE = 'UPCE';
+	const ENCODER_EAN8 = 'EAN8';
+	const ENCODER_EAN13 = 'EAN13';
+	const ENCODER_C39 = 'C39';
+	const ENCODER_C39_ASCII = 'C39ASCII';
+	const ENCODER_C93 = 'C93';
+	const ENCODER_C93_ASCII = 'C93ASCII';
+	const ENCODER_C128 = 'C128';
+
 	/**
 	 * @param string $encoder
 	 * @return BarcodeEncoderInterface

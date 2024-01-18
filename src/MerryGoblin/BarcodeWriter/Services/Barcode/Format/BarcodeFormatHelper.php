@@ -4,6 +4,13 @@ namespace MerryGoblin\BarcodeWriter\Services\Barcode\Format;
 
 class BarcodeFormatHelper
 {
+	const FORMAT_PNG = 'PNG';
+	const FORMAT_JPEG = 'JPEG';
+	const FORMAT_GIF = 'GIF';
+	const FORMAT_TIFF = 'TIFF'; // Not handled
+	const FORMAT_SVG = 'SVG';
+	const FORMAT_HTML = 'HTML'; // Not handled
+
 	/**
 	 * @param string $format
 	 * @return BarcodeFormatInterface

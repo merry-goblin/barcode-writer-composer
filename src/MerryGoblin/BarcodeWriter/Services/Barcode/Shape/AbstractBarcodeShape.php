@@ -6,9 +6,6 @@ use MerryGoblin\BarcodeWriter\Services\Barcode\BarcodeConfig;
 
 abstract class AbstractBarcodeShape
 {
-	const LINEAR_SHAPE = 'linear';
-	const MATRIX_SHAPE = 'matrix';
-
 	/**
 	 * @param array $encodedData
 	 * @param BarcodeConfig $config
