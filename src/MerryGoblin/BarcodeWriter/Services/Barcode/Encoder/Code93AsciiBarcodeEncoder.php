@@ -2,7 +2,7 @@
 
 namespace MerryGoblin\BarcodeWriter\Services\Barcode\Encoder;
 
-use MerryGoblin\BarcodeWriter\Services\Barcode\Shape\AbstractBarcodeShape;
+use MerryGoblin\BarcodeWriter\Services\Barcode\Shape\BarcodeShapeHelper;
 use MerryGoblin\BarcodeWriter\Services\Barcode\Type\BarcodeTypeInterface;
 
 class Code93AsciiBarcodeEncoder extends Code93BarcodeEncoder implements BarcodeEncoderInterface
