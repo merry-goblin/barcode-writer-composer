@@ -47,6 +47,11 @@ class BarcodeTypeHelper
 	const TYPE_CODABAR = 'CODABAR';
 	const TYPE_PHARMA_CODE = 'PHARMA'; // Not handled
 	const TYPE_PHARMA_CODE_TWO_TRACKS = 'PHARMA2T'; // Not handled
+    const TYPE_QR = 'QR';
+    const TYPE_QR_L = 'QRL';
+    const TYPE_QR_M = 'QRM';
+    const TYPE_QR_Q = 'QRQ';
+    const TYPE_QR_H = 'QRH';
 
 	/**
 	 * @param string $type
