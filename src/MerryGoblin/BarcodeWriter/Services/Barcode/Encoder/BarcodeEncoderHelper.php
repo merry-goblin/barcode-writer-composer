@@ -13,6 +13,7 @@ class BarcodeEncoderHelper
 	const ENCODER_C93 = 'C93';
 	const ENCODER_C93_ASCII = 'C93ASCII';
 	const ENCODER_C128 = 'C128';
+	const ENCODER_CODABAR = 'CODABAR';
 
 	/**
 	 * @param string $encoder
@@ -49,6 +50,12 @@ class BarcodeEncoderHelper
 				break;
 			case 'code128':
 				$barcodeEncoder = new Code128BarcodeEncoder();
+				break;
+			case 'codabar':
+				$barcodeEncoder = new CodabarBarcodeEncoder();
+				break;
+			case 'itf14':
+				$barcodeEncoder = new ITF14BarcodeEncoder();
 				break;
 		}
 

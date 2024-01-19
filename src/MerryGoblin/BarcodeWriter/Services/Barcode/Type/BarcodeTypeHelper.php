@@ -32,6 +32,7 @@ class BarcodeTypeHelper
 	const TYPE_CODE_128_C = 'C128C';
 	const TYPE_CODE_128_AC = 'C128AC';
 	const TYPE_CODE_128_BC = 'C128BC';
+	const TYPE_ITF_14 = 'ITF14';
 	const TYPE_STANDARD_2_5 = 'S25'; // Not handled
 	const TYPE_STANDARD_2_5_CHECKSUM = 'S25+'; // Not handled
 	const TYPE_INTERLEAVED_2_5 = 'I25'; // Not handled
@@ -43,7 +44,7 @@ class BarcodeTypeHelper
 	const TYPE_RMS4CC = 'RMS4CC'; // Not handled
 	const TYPE_KIX = 'KIX'; // Not handled
 	const TYPE_IMB = 'IMB'; // Not handled
-	const TYPE_CODABAR = 'CODABAR'; // Not handled
+	const TYPE_CODABAR = 'CODABAR';
 	const TYPE_PHARMA_CODE = 'PHARMA'; // Not handled
 	const TYPE_PHARMA_CODE_TWO_TRACKS = 'PHARMA2T'; // Not handled
 
@@ -132,6 +133,13 @@ class BarcodeTypeHelper
 				break;
 			case 'ean128bc':
 				$barcodeType = new EAN128BCType();
+				break;
+			case 'codabar':
+				$barcodeType = new CodabarType();
+				break;
+			case 'itf':
+			case 'itf14':
+				$barcodeType = new ITF14Type();
 				break;
 		}
 
