@@ -8,6 +8,8 @@ class BarcodeDimensions
 	public $imageHeight;
 	public $barcodeWidth;
 	public $barcodeHeight;
+	public $barcodeUnscaledWidth;
+	public $barcodeUnscaledHeight;
 	public $barcodeTopPosition;
 	public $barcodeLeftPosition;
 	public $widths;

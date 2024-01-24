@@ -146,6 +146,12 @@ class BarcodeTypeHelper
 			case 'itf14':
 				$barcodeType = new ITF14Type();
 				break;
+			case 'qr':
+				$barcodeType = new QRType();
+				break;
+			case 'qrl':
+				$barcodeType = new QRLType();
+				break;
 		}
 
 		if (is_null($barcodeType)) {

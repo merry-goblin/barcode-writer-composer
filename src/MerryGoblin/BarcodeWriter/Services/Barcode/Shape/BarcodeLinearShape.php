@@ -4,7 +4,7 @@ namespace MerryGoblin\BarcodeWriter\Services\Barcode\Shape;
 
 use MerryGoblin\BarcodeWriter\Services\Barcode\BarcodeConfig;
 
-class BarcodeLinearShape extends AbstractBarcodeShape
+class BarcodeLinearShape extends AbstractBarcodeShape implements BarcodeShapeInterface
 {
 	/**
 	 * @param array $encodedData

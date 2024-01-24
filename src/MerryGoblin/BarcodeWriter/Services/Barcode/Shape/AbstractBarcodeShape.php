@@ -28,12 +28,12 @@ abstract class AbstractBarcodeShape
 			$config->w9,
 		];
 		$size = $this->calculateSize($encodedData, $barcodeDimensions->widths);
-		$dscale = ($encodedData && isset($encodedData['g']) && $encodedData['g'] == 'm') ? 4 : 1;
-		$scale = (isset($config->sf) ? (float)$config->sf : $dscale);
+		$barcodeDimensions->barcodeUnscaledWidth = $size[0];
+		$barcodeDimensions->barcodeUnscaledHeight = $size[1];
+		$scale = isset($config->sf) ? (float)$config->sf : 1;
 		$scalex = (isset($config->sx) ? (float)$config->sx : $scale);
 		$scaley = (isset($config->sy) ? (float)$config->sy : $scale);
-		$dpadding = ($encodedData && isset($encodedData['g']) && $encodedData['g'] == 'm') ? 0 : 10;
-		$padding = (isset($config->p) ? (int)$config->p : $dpadding);
+		$padding = isset($config->p) ? (int)$config->p : 10;
 		$vert = (isset($config->pv) ? (int)$config->pv : $padding);
 		$horiz = (isset($config->ph) ? (int)$config->ph : $padding);
 		$barcodeDimensions->barcodeTopPosition = (isset($config->pt) ? (int)$config->pt : $vert);

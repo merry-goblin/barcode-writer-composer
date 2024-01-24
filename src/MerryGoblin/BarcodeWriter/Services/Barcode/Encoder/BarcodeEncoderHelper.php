@@ -57,6 +57,9 @@ class BarcodeEncoderHelper
 			case 'itf14':
 				$barcodeEncoder = new ITF14BarcodeEncoder();
 				break;
+			case 'qr':
+				$barcodeEncoder = new QRBarcodeEncoder();
+				break;
 		}
 
 		if (is_null($barcodeEncoder)) {

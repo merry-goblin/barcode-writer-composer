@@ -548,6 +548,11 @@ class QRBarcodeEncoder extends AbstractBarcodeEncoder implements BarcodeEncoderI
 		return [$ecl];
 	}
 
+	/**
+	 * @param $data
+	 * @param $ecl
+	 * @return array
+	 */
     protected function encodeData($data, $ecl)
     {
         $mode = $this->detectMode($data);
@@ -556,7 +561,9 @@ class QRBarcodeEncoder extends AbstractBarcodeEncoder implements BarcodeEncoderI
         $ec_params = $this->ecParams[($version - 1) * 4 + $ecl];
         /* Don't cut off mid-character if exceeding capacity. */
         $max_chars = $this->capacity[$version - 1][$ecl][$mode];
-        if ($mode == 3) $max_chars <<= 1;
+        if ($mode == 3) {
+			$max_chars <<= 1;
+		}
         $data = substr($data, 0, $max_chars);
         /* Convert from character level to bit level. */
         switch ($mode) {
@@ -573,20 +580,24 @@ class QRBarcodeEncoder extends AbstractBarcodeEncoder implements BarcodeEncoderI
                 $code = $this->encodeKanji($data, $version_group);
                 break;
         }
-        for ($i = 0; $i < 4; $i++) $code[] = 0;
-        while (count($code) % 8) $code[] = 0;
+        for ($i = 0; $i < 4; $i++) {
+			$code[] = 0;
+		}
+        while (count($code) % 8) {
+			$code[] = 0;
+		}
         /* Convert from bit level to byte level. */
         $data = [];
         for ($i = 0, $n = count($code); $i < $n; $i += 8) {
             $byte = 0;
-            if ($code[$i + 0]) $byte |= 0x80;
-            if ($code[$i + 1]) $byte |= 0x40;
-            if ($code[$i + 2]) $byte |= 0x20;
-            if ($code[$i + 3]) $byte |= 0x10;
-            if ($code[$i + 4]) $byte |= 0x08;
-            if ($code[$i + 5]) $byte |= 0x04;
-            if ($code[$i + 6]) $byte |= 0x02;
-            if ($code[$i + 7]) $byte |= 0x01;
+            if ($code[$i])     { $byte |= 0x80; }
+            if ($code[$i + 1]) { $byte |= 0x40; }
+            if ($code[$i + 2]) { $byte |= 0x20; }
+            if ($code[$i + 3]) { $byte |= 0x10; }
+            if ($code[$i + 4]) { $byte |= 0x08; }
+            if ($code[$i + 5]) { $byte |= 0x04; }
+            if ($code[$i + 6]) { $byte |= 0x02; }
+            if ($code[$i + 7]) { $byte |= 0x01; }
             $data[] = $byte;
         }
         for (
@@ -599,18 +610,33 @@ class QRBarcodeEncoder extends AbstractBarcodeEncoder implements BarcodeEncoderI
         return [$mode, $version, $ec_params, $data];
     }
 
-
+	/**
+	 * @param $data
+	 * @return int
+	 */
     protected function detectMode($data)
     {
-        $numeric = '/^[0-9]*$/';
-        $alphanumeric = '/^[0-9A-Z .\/:$%*+-]*$/';
+        $numeric = '/^\d*$/';
+        $alphanumeric = '/^[\dA-Z .\/:$%*+-]*$/';
         $kanji = '/^([\x81-\x9F\xE0-\xEA][\x40-\xFC]|[\xEB][\x40-\xBF])*$/';
-        if (preg_match($numeric, $data)) return 0;
-        if (preg_match($alphanumeric, $data)) return 1;
-        if (preg_match($kanji, $data)) return 3;
+        if (preg_match($numeric, $data)) {
+			return 0;
+		}
+        if (preg_match($alphanumeric, $data)) {
+			return 1;
+		}
+        if (preg_match($kanji, $data)) {
+			return 3;
+		}
         return 2;
     }
 
+	/**
+	 * @param $data
+	 * @param $mode
+	 * @param $ecl
+	 * @return int
+	 */
     protected function detectVersion($data, $mode, $ecl)
     {
         $length = strlen($data);
@@ -623,6 +649,11 @@ class QRBarcodeEncoder extends AbstractBarcodeEncoder implements BarcodeEncoderI
         return 40;
     }
 
+	/**
+	 * @param $data
+	 * @param $version_group
+	 * @return int[]
+	 */
     protected function encodeNumeric($data, $version_group)
     {
         $code = [0, 0, 0, 1];
@@ -631,9 +662,11 @@ class QRBarcodeEncoder extends AbstractBarcodeEncoder implements BarcodeEncoderI
             case 2:  /* 27 - 40 */
                 $code[] = $length & 0x2000;
                 $code[] = $length & 0x1000;
+				break;
             case 1:  /* 10 - 26 */
                 $code[] = $length & 0x0800;
                 $code[] = $length & 0x0400;
+				break;
             case 0:  /* 1 - 9 */
                 $code[] = $length & 0x0200;
                 $code[] = $length & 0x0100;
@@ -645,6 +678,7 @@ class QRBarcodeEncoder extends AbstractBarcodeEncoder implements BarcodeEncoderI
                 $code[] = $length & 0x0004;
                 $code[] = $length & 0x0002;
                 $code[] = $length & 0x0001;
+				break;
         }
         for ($i = 0; $i < $length; $i += 3) {
             $group = substr($data, $i, 3);
@@ -653,20 +687,28 @@ class QRBarcodeEncoder extends AbstractBarcodeEncoder implements BarcodeEncoderI
                     $code[] = $group & 0x200;
                     $code[] = $group & 0x100;
                     $code[] = $group & 0x080;
+					break;
                 case 2:
                     $code[] = $group & 0x040;
                     $code[] = $group & 0x020;
                     $code[] = $group & 0x010;
+					break;
                 case 1:
                     $code[] = $group & 0x008;
                     $code[] = $group & 0x004;
                     $code[] = $group & 0x002;
                     $code[] = $group & 0x001;
+					break;
             }
         }
         return $code;
     }
 
+	/**
+	 * @param $data
+	 * @param $version_group
+	 * @return int[]
+	 */
     protected function encodeAlphanumeric($data, $version_group)
     {
         $alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:';
@@ -676,9 +718,11 @@ class QRBarcodeEncoder extends AbstractBarcodeEncoder implements BarcodeEncoderI
             case 2:  /* 27 - 40 */
                 $code[] = $length & 0x1000;
                 $code[] = $length & 0x0800;
+				break;
             case 1:  /* 10 - 26 */
                 $code[] = $length & 0x0400;
                 $code[] = $length & 0x0200;
+				break;
             case 0:  /* 1 - 9 */
                 $code[] = $length & 0x0100;
                 $code[] = $length & 0x0080;
@@ -689,6 +733,7 @@ class QRBarcodeEncoder extends AbstractBarcodeEncoder implements BarcodeEncoderI
                 $code[] = $length & 0x0004;
                 $code[] = $length & 0x0002;
                 $code[] = $length & 0x0001;
+				break;
         }
         for ($i = 0; $i < $length; $i += 2) {
             $group = substr($data, $i, 2);
@@ -720,6 +765,11 @@ class QRBarcodeEncoder extends AbstractBarcodeEncoder implements BarcodeEncoderI
         return $code;
     }
 
+	/**
+	 * @param $data
+	 * @param $version_group
+	 * @return int[]
+	 */
     protected function encodeBinary($data, $version_group)
     {
         $code = array(0, 1, 0, 0);
@@ -735,6 +785,7 @@ class QRBarcodeEncoder extends AbstractBarcodeEncoder implements BarcodeEncoderI
                 $code[] = $length & 0x0400;
                 $code[] = $length & 0x0200;
                 $code[] = $length & 0x0100;
+				break;
             case 0:  /* 1 - 9 */
                 $code[] = $length & 0x0080;
                 $code[] = $length & 0x0040;
@@ -744,6 +795,7 @@ class QRBarcodeEncoder extends AbstractBarcodeEncoder implements BarcodeEncoderI
                 $code[] = $length & 0x0004;
                 $code[] = $length & 0x0002;
                 $code[] = $length & 0x0001;
+				break;
         }
         for ($i = 0; $i < $length; $i++) {
             $ch = ord(substr($data, $i, 1));
@@ -759,6 +811,11 @@ class QRBarcodeEncoder extends AbstractBarcodeEncoder implements BarcodeEncoderI
         return $code;
     }
 
+	/**
+	 * @param $data
+	 * @param $version_group
+	 * @return int[]
+	 */
     private function encodeKanji($data, $version_group)
     {
         $code = array(1, 0, 0, 0);
@@ -814,16 +871,22 @@ class QRBarcodeEncoder extends AbstractBarcodeEncoder implements BarcodeEncoderI
         return $code;
     }
 
+	/**
+	 * @param $data
+	 * @param $ec_params
+	 * @param $version
+	 * @return array
+	 */
     protected function encodeEc($data, $ec_params, $version)
     {
         $blocks = $this->ecSplit($data, $ec_params);
-        $ec_blocks = array();
+        $ec_blocks = [];
         for ($i = 0, $n = count($blocks); $i < $n; $i++) {
             $ec_blocks[] = $this->qr_ec_divide($blocks[$i], $ec_params);
         }
         $data = $this->ecInterleave($blocks);
         $ec_data = $this->ecInterleave($ec_blocks);
-        $code = array();
+        $code = [];
         foreach ($data as $ch) {
             $code[] = $ch & 0x80;
             $code[] = $ch & 0x40;
@@ -850,6 +913,11 @@ class QRBarcodeEncoder extends AbstractBarcodeEncoder implements BarcodeEncoderI
         return $code;
     }
 
+	/**
+	 * @param $data
+	 * @param $ec_params
+	 * @return array
+	 */
     protected function ecSplit($data, $ec_params)
     {
         $blocks = [];
@@ -865,6 +933,11 @@ class QRBarcodeEncoder extends AbstractBarcodeEncoder implements BarcodeEncoderI
         return $blocks;
     }
 
+	/**
+	 * @param $data
+	 * @param $ecParams
+	 * @return array
+	 */
     protected function qr_ec_divide($data, $ecParams)
     {
         $num_data = count($data);
@@ -886,6 +959,10 @@ class QRBarcodeEncoder extends AbstractBarcodeEncoder implements BarcodeEncoderI
         return array_slice($message, $num_data, $num_error);
     }
 
+	/**
+	 * @param $blocks
+	 * @return array
+	 */
     protected function ecInterleave($blocks)
     {
         $data = [];
@@ -903,6 +980,11 @@ class QRBarcodeEncoder extends AbstractBarcodeEncoder implements BarcodeEncoderI
         return $data;
     }
 
+	/**
+	 * @param $version
+	 * @param $data
+	 * @return array
+	 */
     protected function createMatrix($version, $data) {
         $size = $version * 4 + 17;
         $matrix = [];
@@ -989,6 +1071,11 @@ class QRBarcodeEncoder extends AbstractBarcodeEncoder implements BarcodeEncoderI
         return array($size, $matrix);
     }
 
+	/**
+	 * @param $matrix
+	 * @param $size
+	 * @return array
+	 */
     protected function applyBestMask($matrix, $size)
     {
         $best_mask = 0;
@@ -1006,6 +1093,12 @@ class QRBarcodeEncoder extends AbstractBarcodeEncoder implements BarcodeEncoderI
         return array($best_mask, $best_matrix);
     }
 
+	/**
+	 * @param $matrix
+	 * @param $size
+	 * @param $mask
+	 * @return mixed
+	 */
     protected function applyMask($matrix, $size, $mask)
     {
         for ($i = 0; $i < $size; $i++) {
@@ -1020,6 +1113,12 @@ class QRBarcodeEncoder extends AbstractBarcodeEncoder implements BarcodeEncoderI
         return $matrix;
     }
 
+	/**
+	 * @param $mask
+	 * @param $r
+	 * @param $c
+	 * @return bool
+	 */
     protected function mask($mask, $r, $c)
     {
         switch ($mask) {
@@ -1032,6 +1131,7 @@ class QRBarcodeEncoder extends AbstractBarcodeEncoder implements BarcodeEncoderI
             case 6: return !( ((($r * $c) % 2) + (($r * $c) % 3)) % 2 );
             case 7: return !( ((($r + $c) % 2) + (($r * $c) % 3)) % 2 );
         }
+		return false;
     }
 
     protected function penalty(&$matrix, $size)
@@ -1137,6 +1237,14 @@ class QRBarcodeEncoder extends AbstractBarcodeEncoder implements BarcodeEncoderI
         return min($a, $b) * 10;
     }
 
+	/**
+	 * @param $matrix
+	 * @param $size
+	 * @param $ecl
+	 * @param $mask
+	 * @param $version
+	 * @return array
+	 */
     protected function finalizeMatrix($matrix, $size, $ecl, $mask, $version)
     {
         /* Format Info */
@@ -1189,5 +1297,4 @@ class QRBarcodeEncoder extends AbstractBarcodeEncoder implements BarcodeEncoderI
         }
         return $matrix;
     }
-
 }

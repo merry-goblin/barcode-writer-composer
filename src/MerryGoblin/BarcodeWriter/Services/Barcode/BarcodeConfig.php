@@ -136,6 +136,7 @@ class BarcodeConfig
 		$shape = strtolower($shape);
 		$format = strtolower($format);
 		if ($shape === 'linear') {
+			$this->initLinear();
 			switch ($format) {
 				case 'png':
 				case 'jpeg':
@@ -148,6 +149,7 @@ class BarcodeConfig
 					break;
 			}
 		} elseif ($shape === 'matrix') {
+			$this->initMatrix();
 			switch ($format) {
 				case 'png':
 				case 'jpeg':
@@ -160,6 +162,24 @@ class BarcodeConfig
 					break;
 			}
 		}
+	}
+
+	/**
+	 * @return void
+	 */
+	public function initLinear()
+	{
+		$this->p = (!is_null($this->p)) ? $this->p : 10;
+		$this->sf = (!is_null($this->sf)) ? $this->sf : 1;
+	}
+
+	/**
+	 * @return void
+	 */
+	public function initMatrix()
+	{
+		$this->p = (!is_null($this->p)) ? $this->p : 0;
+		$this->sf = (!is_null($this->sf)) ? $this->sf : 4;
 	}
 
 	/**
